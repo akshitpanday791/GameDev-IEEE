@@ -1,17 +1,17 @@
 import React from 'react';
 import {Switch, Route } from "react-router-dom";
 import {AuthProvider} from './authcontext';
-import HomeScreen from './Components/HomeScreen';
 import Login from './Components/Login';
 import Register from './Components/Register';
-
+import PrivateRoute from './Components/PrivateRoute';
+import Game from './Components/Game';
 import './App.css';
 
 const App = () => {
   return (
     <AuthProvider>
         <Switch>
-          <Route exact path="/" component={HomeScreen} />
+        <PrivateRoute exact path="/" component={Game} />
           <Route path="/register" exact component={Register} />
           <Route path="/login" exact component={Login} />        
         </Switch>

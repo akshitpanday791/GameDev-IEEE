@@ -1,5 +1,5 @@
 import React, {useState} from 'react';
-import {Link, useHistory} from 'react-router-dom';
+import {Link, useHistory,Redirect} from 'react-router-dom';
 import {useAuth} from '../authcontext';
 
 import Spinner from 'react-bootstrap/Spinner';
@@ -10,7 +10,7 @@ import './Login.css';
 const Login = () => {
     const {login} = useAuth();
     const history = useHistory()
-
+    const { currentUser } = useAuth()
     const[email, setEmail] = useState('');
     const[password, setPassword] = useState('');
     const[error, setError] = useState('');
@@ -31,7 +31,11 @@ const Login = () => {
     }
 
     return (
-        <div className="wrapper">
+        <React.Fragment>
+        {currentUser? (
+            <Redirect to="/" />
+        ) :(
+            <div className="wrapper">
 
             {loading && <Spinner animation="border" />}
 
@@ -52,6 +56,10 @@ const Login = () => {
             </ul>
 
         </div>
+        )
+        }
+       
+       </React.Fragment>
     );
 };
 
