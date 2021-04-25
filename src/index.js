@@ -6,4 +6,4 @@ import App from './App';
 
 import './index.css';
 
-ReactDOM.render(<Router><App /></Router>, document.querySelector('#root'));
+ReactDOM.render(<Router> <App /> </Router>, document.querySelector('#root'));
