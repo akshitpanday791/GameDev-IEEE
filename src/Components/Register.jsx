@@ -2,7 +2,7 @@ import React, {useState} from 'react';
 import {Link, useHistory,Redirect} from 'react-router-dom';
 import {useAuth} from '../authcontext';
 
-import Spinner from 'react-bootstrap/Spinner';
+import Spinner from '../Components/UIElements/LoadingSpinner';
 import { Alert } from "react-bootstrap";
 
 import './Register.css';
@@ -42,7 +42,7 @@ const Register = () => {
       {currentUser ? (<Redirect to="/" />):(
         <div className="wrapper">
 
-{loading && <Spinner animation="border" /> } 
+{loading ? <Spinner asOverlay /> : ''}
 
 <form className="register__form">
     <h2>Create your account</h2>
