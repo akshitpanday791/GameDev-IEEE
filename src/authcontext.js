@@ -10,11 +10,13 @@ export function useAuth() {
 export function AuthProvider({ children }) {
     const [currentUser, setCurrentUser] = useState()
     const [loading, setLoading] = useState(true)
+
   
     function signup(email, password,username) {
-      return auth.createUserWithEmailAndPassword(email, password).then((authUser) => {
-        return authUser.user.updateProfile({
-        displayName : username
+      return auth.createUserWithEmailAndPassword(email, password)
+        .then((authUser) => {
+          return authUser.user.updateProfile({
+          displayName : username
         })
         })
     }
@@ -38,7 +40,18 @@ export function AuthProvider({ children }) {
     function updatePassword(password) {
       return currentUser.updatePassword(password)
     }
-  
+
+    function updateUserName(userName) {
+      return currentUser.updateProfile({
+        displayName : userName
+      });
+    }
+
+    function verifyEmail(){
+      return currentUser.sendEmailVerification();
+
+    }
+
     useEffect(() => {
       const unsubscribe = auth.onAuthStateChanged(user => {
         setCurrentUser(user)
@@ -55,7 +68,9 @@ export function AuthProvider({ children }) {
       logout,
       resetPassword,
       updateEmail,
-      updatePassword
+      updatePassword,
+      verifyEmail,
+      updateUserName
     }
   
     return (

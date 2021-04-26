@@ -3,16 +3,6 @@ import { Card, Button, Alert } from "react-bootstrap"
 import { useAuth } from "../authcontext"
 import { Link, useHistory} from "react-router-dom"
 
-// export const game = () => {
-//     return (
-//         <div>
-        
-//         </div>
-//     )
-// }
-
-
-
 const Game=()=> {
 
     const { currentUser, logout } = useAuth()
@@ -23,14 +13,20 @@ const Game=()=> {
     setError("")
 
     try {
-        
       await logout()
        history.push("/");
-      
-
+    
     } catch {
       setError("Failed to log out")
     }
+  }
+
+  const sendVerificationEmail = () =>{
+    currentUser.sendEmailVerification().then(()=>{
+        window.alert("Email sent")
+    }).catch((err) =>{
+        window.alert(err)
+    })
   }
 
   return (
@@ -43,16 +39,17 @@ const Game=()=> {
           {error && <Alert  variant="danger">{error}</Alert>}
 
           <strong>Email:</strong> {currentUser.displayName}
-          <Link to="/update-profile" className="btn btn-primary w-100 mt-3">
+          <Link to="/updateprofile" className="btn btn-primary w-100 mt-3">
             Update Profile
           </Link>
         </Card.Body>
       </Card>
-      <div className="w-100 text-center mt-2">
+     <div className="w-100 text-center mt-2">
         <Button variant="link" onClick={handleLogout}>
           Log Out
         </Button>
       </div>
+     <Button variant="link" onClick={sendVerificationEmail}>verify</Button>
     </React.Fragment>
   )
 }

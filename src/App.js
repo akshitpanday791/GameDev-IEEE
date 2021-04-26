@@ -5,6 +5,8 @@ import Login from './Components/Login';
 import Register from './Components/Register';
 import PrivateRoute from './Components/PrivateRoute';
 import Game from './Components/Game';
+import ForgotPassword from "./Components/ForgotPassword.jsx";
+import UpdateProfile from './Components/Updateprofile';
 import './App.css';
 
 const App = () => {
@@ -12,8 +14,10 @@ const App = () => {
     <AuthProvider>
         <Switch>
         <PrivateRoute exact path="/" component={Game} />
+        <PrivateRoute path="/updateprofile" component={UpdateProfile} />
           <Route path="/register" exact component={Register} />
-          <Route path="/login" exact component={Login} />        
+          <Route path="/login" exact component={Login} />  
+          <Route path="/forgotpassword" component={ForgotPassword} />      
         </Switch>
     </AuthProvider>
   );

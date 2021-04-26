@@ -48,9 +48,9 @@ const Login = () => {
             </form>
 
             <ul className="links-container">
-                <li><a href="/" className="box link">Need Help?</a></li>
-                <li><a href="/" className="box link">Forgot Password?</a></li>
-                <li><a href="/" className="box link">How the game works?</a></li>
+                <li><Link to="/" className="box link">Need Help?</Link></li>
+                <li><Link to="/forgotpassword" className="box link">Forgot Password?</Link></li>
+                <li><Link to="/" className="box link">How the game works?</Link></li>    
             </ul>
 
         </div>

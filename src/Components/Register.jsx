@@ -8,7 +8,7 @@ import { Alert } from "react-bootstrap";
 import './Register.css';
 
 const Register = () => {
-    const { signup } = useAuth();
+    const { signup,verifyEmail } = useAuth();
     const { currentUser} = useAuth()
     const[email, setEmail] = useState('');
     const[username, setUsername] = useState('');
@@ -16,7 +16,8 @@ const Register = () => {
     const[confirmPassword, setConfirmPassword] = useState('');
     const[error, setError] = useState('');
     const[loading, setLoading] = useState(false)
-    const history = useHistory()
+    const history = useHistory();
+
 
     const handleRegister = async (e) => {
         e.preventDefault();
@@ -24,8 +25,9 @@ const Register = () => {
             setError("Passwords Do not match");
         } else {
             try {
-                setLoading(true);
+                setLoading(true);               
                 await signup(email,password,username);
+                
                 history.replace('/')
             } catch(err){
                 setError(err.message)
@@ -57,9 +59,8 @@ const Register = () => {
 </form>
 
 <ul className="links-container">
-    <li><a href="/" className="box link">Need Help?</a></li>
-    <li><a href="/" className="box link">Forgot Password?</a></li>
-    <li><a href="/" className="box link">How the game works?</a></li>
+    <li><Link to="/" className="box link">Need Help?</Link></li>
+    <li><Link to="/" className="box link">How the game works?</Link></li>
 </ul>
 
 </div>
