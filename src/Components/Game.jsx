@@ -5,8 +5,8 @@ import { Link, useHistory} from "react-router-dom"
 
 const Game=()=> {
 
-    const { currentUser, logout } = useAuth()
-    const history = useHistory()
+    const { currentUser, logout } = useAuth();
+    const history = useHistory();
     const [error,setError]=useState("");
 
   async function handleLogout() {
