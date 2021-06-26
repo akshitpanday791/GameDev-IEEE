@@ -9,17 +9,19 @@ import ForgotPassword from "./Components/ForgotPassword.jsx";
 import UpdateProfile from './Components/Updateprofile';
 import './App.css';
 import MainGame from './Components/maingame/MainGame';
+import LeaderBoard from './Components/LeaderBoard';
 
 const App = () => {
   return (
     <AuthProvider>
         <Switch>
-        <PrivateRoute exact path="/" component={Game} />
-        <PrivateRoute exact path="/:roomId" component={MainGame} />
-        <PrivateRoute path="/updateprofile" component={UpdateProfile} />
+          <PrivateRoute exact path="/" component={Game} />
+          <PrivateRoute path="/updateprofile" component={UpdateProfile} />
           <Route path="/register" exact component={Register} />
           <Route path="/login" exact component={Login} />  
-          <Route path="/forgotpassword" component={ForgotPassword} />      
+          <Route path="/leaderboard" exact component={LeaderBoard} />  
+          <Route path="/forgotpassword" component={ForgotPassword} />  
+          <PrivateRoute exact path="/:roomId" component={MainGame} />    
         </Switch>
     </AuthProvider>
   );

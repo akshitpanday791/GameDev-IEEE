@@ -7,7 +7,7 @@ export const HomeScreen = () => {
             <h1>HomeScreen</h1>
             <div className="app__itemsContainer">
                 <Item
-                backgroundImg={Background}
+                    backgroundImg={Background}
                 />
             </div>
         </div>
