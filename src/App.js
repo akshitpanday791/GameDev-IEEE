@@ -10,7 +10,7 @@ import UpdateProfile from './Components/Updateprofile';
 import './App.css';
 import MainGame from './Components/maingame/MainGame';
 import LeaderBoard from './Components/LeaderBoard';
-
+import 'bootstrap/dist/css/bootstrap.min.css';
 const App = () => {
   return (
     <AuthProvider>
