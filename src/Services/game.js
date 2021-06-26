@@ -3,7 +3,7 @@ import 'firebase/firestore';
 const db = app.firestore();
 
 
-const prepareGame = async(wait, result) =>{
+const prepareGame = async(current_user_name,current_user_uid,wait, result) =>{
     wait();
     try{
         const questions = await db.collection('questions').get();
@@ -19,14 +19,26 @@ const prepareGame = async(wait, result) =>{
         //var shuffle answers
         ansarr = shuffle(ansarr);
 
-        //convert the 1D array to 2D array
-        var new_ansarr = [];
-        while(ansarr.length) new_ansarr.push({row : ansarr.splice(0,5)});
-        
+        var board1d = shuffle(ansarr.map(ans => {return {value : ans, state : false}})); //1 D board created
+    
+        //convert the 1D array to 2D board
+        var board2d = [];
+        while(board1d.length) board2d.push({row : board1d.splice(0,5)});
         const docref = await db.collection('gamerooms').add({
+            createdby : current_user_name,
             questionset : quearr,
-            board : new_ansarr
+            answerset : ansarr,
+            [current_user_uid] : board2d
         });
+        await db.collection('realtimestates').doc(docref.id).set({
+            questionstate : new Array(25).fill(false),
+            users : [{
+                id : current_user_uid,
+                name : current_user_name,
+                score : 0
+            }]
+        });
+        
         result({success:true, link: docref.id});
     }catch(err){
         result({success:false, message: err});
@@ -42,7 +54,7 @@ const SetData = async(collection,document,data,wait,result) =>{
         }).catch((err)=>{
           result({"success":false,"error":err});
         });
-  }
+}
 
 function shuffle(array) {
     var currentIndex = array.length,  randomIndex;
@@ -59,4 +71,19 @@ function shuffle(array) {
     return array;
 }
 
-export {prepareGame, SetData};
+const getRoom = (doc_id, wait,result) =>{
+    wait();
+    db.collection('gamerooms').doc(doc_id).get().then((doc) => {
+        if (!doc.exists) {
+            result({"success":false,"message": "Document not found"});
+        } else {
+            result({"success":true,"data":doc.data()});
+        }
+        console.log("Cached document data:", doc.data());
+    }).catch((error) => {
+        result({"success":true,"message" : error});
+    });
+};
+
+
+export {prepareGame, SetData, getRoom};

@@ -8,7 +8,7 @@ import { Alert } from "react-bootstrap";
 import './Register.css';
 
 const Register = () => {
-    const { signup,verifyEmail } = useAuth();
+    const { signup} = useAuth();
     const { currentUser} = useAuth()
     const[email, setEmail] = useState('');
     const[username, setUsername] = useState('');

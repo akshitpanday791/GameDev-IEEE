@@ -1,19 +1,17 @@
 import React, { useState} from "react"
-import { Modal, Card, Button, Alert } from "react-bootstrap"
+import { Modal, Button, Alert } from "react-bootstrap"
 import { useAuth } from "../authcontext"
-import { Link, useHistory} from "react-router-dom"
-import { SetData,  prepareGame } from "../Services/game"
+import { useHistory} from "react-router-dom"
+import { prepareGame } from "../Services/game"
 
 
 const Game=()=> {
-
     const { currentUser, logout } = useAuth();
     const history = useHistory();
     const [error,setError]=useState("");
 
   async function handleLogout() {
     setError("")
-
     try {
       await logout()
        history.push("/");
@@ -34,10 +32,14 @@ const Game=()=> {
   
 
   const startGame = () =>{
-    prepareGame(()=>{
+    prepareGame(currentUser.displayName,currentUser.uid,()=>{
         console.log("Loading...");
     },response =>{
-        console.log(response);
+        if(response.success){
+            history.push("/"+response.link);
+        }else{
+            setError(response.message);
+        }
     }); 
   }
 
@@ -46,15 +48,15 @@ const Game=()=> {
     {error && <Alert  variant="danger">{error}</Alert>}
     <Modal.Dialog>
         <Modal.Header closeButton>
-          <Modal.Title>{currentUser.displayName}</Modal.Title>
+          <Modal.Title>Hii <i>{currentUser.displayName}</i>!!</Modal.Title>
         </Modal.Header>
 
         <Modal.Body>
           <div className="d-grid gap-2 ">
             <Button variant="primary">Resume</Button><br/><br/>
             <Button variant="secondary" onClick={startGame}>Start Game</Button><br/><br/>
+            <Button variant="warning" onClick={sendVerificationEmail}>Send Verification Link</Button><br/><br/>
             <Button variant="danger" onClick={handleLogout}>logout</Button> <br/><br/>
-          
           </div>
         </Modal.Body>
     </Modal.Dialog>

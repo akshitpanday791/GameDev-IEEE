@@ -8,12 +8,14 @@ import Game from './Components/Game';
 import ForgotPassword from "./Components/ForgotPassword.jsx";
 import UpdateProfile from './Components/Updateprofile';
 import './App.css';
+import MainGame from './Components/maingame/MainGame';
 
 const App = () => {
   return (
     <AuthProvider>
         <Switch>
         <PrivateRoute exact path="/" component={Game} />
+        <PrivateRoute exact path="/:roomId" component={MainGame} />
         <PrivateRoute path="/updateprofile" component={UpdateProfile} />
           <Route path="/register" exact component={Register} />
           <Route path="/login" exact component={Login} />  
