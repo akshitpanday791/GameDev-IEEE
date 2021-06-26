@@ -79,9 +79,8 @@ const getRoom = (doc_id, wait,result) =>{
         } else {
             result({"success":true,"data":doc.data()});
         }
-        console.log("Cached document data:", doc.data());
     }).catch((error) => {
-        result({"success":true,"message" : error});
+        result({"success":false,"message" : error});
     });
 };
 
