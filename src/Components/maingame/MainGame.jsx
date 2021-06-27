@@ -1,7 +1,7 @@
 import React, {useEffect, useState} from 'react'
 import { useParams } from 'react-router';
 import {useHistory} from 'react-router-dom';
-import { getRoom, getUpdate, joinGame, questionChoosed } from '../../Services/game';
+import { getRoom, getUpdate, joinGame, onAnswerSelect, questionChoosed, updatescore } from '../../Services/game';
 import { useAuth } from '../../authcontext';
 import GameNavbar from './GameNavbar';
 import { Container,Row, Col,ListGroup,Modal,Button } from 'react-bootstrap'
@@ -118,7 +118,6 @@ const MainGame = () => {
             const nextUserId = usersList[nextUserIndex].id;
             questionChoosed(roomId,currentquestion,questionindex,newquestionstate,nextUserIndex, nextUserId,()=>{
                 //loading screen functions
-
             },response=>{
                 if(!response.success){
                     //check your  network connection error
@@ -129,22 +128,68 @@ const MainGame = () => {
             console.log("not your turn to choose question");
         }
     }
-    const handleAnswerCellClick = (answer, row, col) => {
-        if(!board[row].row[col].state && currentQuestion !== ""){
-            //check if answer correct
-            if(answer === questions[currentQuestionIndex].answer){
-                //correct answer
-                setStatus("Congrats!! your answer is correct. you got 1 point");
+    const getCurrentAnswerIndex = () => {
+        const answer = questions[currentQuestionIndex].answer;
+        for(var row = 0; row < board.length; row++){
+            for(var col = 0; col < board[row].row.length;col++){
+                if(board[row].row[col].value === answer){
+                    return {row : row, col :col}
+                }
+            }
+        }
+    }
 
+    const getCurrentUserIndex = () => {
+        for(var userindex = 0 ; userindex < usersList.length; userindex++){
+            if(usersList[userindex].id === currentUser.uid){
+                return userindex;
+            }
+        }
+    }
+
+    const handleAnswerCellClick = (answer, row, col) => {
+        if(!board[row].row[col].state){
+            if(currentQuestion !== ""){
+                //check if answer correct
+                var newBoard = board;
+                if(answer === questions[currentQuestionIndex].answer){
+                    //correct answer
+                    setStatus("Congrats!! your answer is correct. you got 1 point");
+                    newBoard[row].row[col].state = true;
+                    
+                    //create new userlist
+                    var newuserlist = usersList;
+                    newuserlist[getCurrentUserIndex()].score += 1;
+                    updatescore(roomId, newuserlist, ()=> {
+                        //laoding on screen
+                    }, response => {
+                        if(!response.success){
+                            //error alert message
+                        }
+                    });
+                }else{
+                    //wrong answer
+                    setStatus("your answer is Wrong!!. you will not get point. Correct answer will be marked");
+                    //mark correct answer
+                    const correctAnswerIndex = getCurrentAnswerIndex();
+                    newBoard[correctAnswerIndex.row].row[correctAnswerIndex.col].state = true;
+                }
+                onAnswerSelect(roomId, currentUser.uid, newBoard, ()=>{
+                    //loading screen function
+                },response=>{
+                    if(!response.success){
+                        //error nework connectivity
+                    }
+                });
             }else{
-                //wrong answer
-                setStatus("your answer is Wrong!!. you will not get point. Correct answer will be marked");
+                setStatus("question not selected.");
             }
         }else{
-            //warning message block is already selected
+            //warning message :  answer cell is already selected
             console.log("block is already selected")
         }
     }
+
 
     return (
         <div>
@@ -178,7 +223,7 @@ const MainGame = () => {
                                     return <tr key={row_key}>
                                         {
                                             row.row.map((cell,cell_key)=>{
-                                                return <td className="answer-cell" bgcolor="#e0ac69" onClick={()=>{handleAnswerCellClick(cell.value, row_key, cell_key)}}  key={cell_key}>
+                                                return <td className="answer-cell" bgcolor={board[row_key].row[cell_key].state ? "#2a9df4" : "#e0ac69" } onClick={()=>{handleAnswerCellClick(cell.value, row_key, cell_key)}}  key={cell_key}>
                                                     {cell.value}
                                                 </td>;
                                             })

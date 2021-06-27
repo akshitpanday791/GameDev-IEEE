@@ -145,4 +145,29 @@ const questionChoosed = async(room_id, currentquestion,questionindex ,questionst
         result({success:false, message: err});
     }
 }
-export {prepareGame, SetData, getRoom, joinGame, getUpdate, questionChoosed};
+
+const onAnswerSelect = async(roomid, current_user_uid, newboard, wait, result) =>{
+    wait();
+    try{
+        await db.collection('gamerooms').doc(roomid).update({
+            [current_user_uid] : newboard
+        });
+        result({success:true, message : "player choosed question"});
+    }catch(err){
+        result({success:false, message: err});
+    }
+}
+
+const updatescore = async(roomid, newuserList, wait, result) =>{
+    wait();
+    try{
+        await db.collection('realtimestates').doc(roomid).update({
+            users : newuserList
+        });
+        result({success:true, message : "player choosed question"});
+    }catch(err){
+        result({success:false, message: err});
+    }
+}
+
+export {prepareGame, SetData, getRoom, joinGame, getUpdate, questionChoosed, onAnswerSelect, updatescore};
