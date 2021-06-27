@@ -1,0 +1,53 @@
+.question-list{
+    height: 85vh;
+    overflow: hidden;
+    overflow-y: scroll;
+}
+
+
+.detail-card .question{
+    font-weight: 500;
+    font-size: 16px;
+}
+
+.game-board table{
+    width: 560px;
+    height: 540px;
+    -webkit-border-radius: 8px;
+    -moz-border-radius: 8px;
+    overflow:hidden;
+    border-radius: 10px;
+    -pie-background: linear-gradient(#ece9d8, #E5ECD8);   
+    box-shadow: #666 0px 2px 3px;
+    overflow: hidden;
+}
+
+.game-board table tr{
+    height: 20%;
+}
+
+.game-board table tr .answer-cell{
+    width: 19%;
+    text-align: center;
+    font-weight: 500;
+    font-size: 18px;
+    border : 2px solid black;
+    cursor: pointer;
+}
+
+.game-board table tr .bingo-text{
+    width: 5%;
+    text-align: center;
+    font-weight: 700;
+    font-size: 18px;
+}
+
+.users-list{
+    height: 85vh;
+    overflow: hidden;
+    overflow-y: scroll;
+}
+
+.highlight-div {
+    border: 4px solid red;
+}

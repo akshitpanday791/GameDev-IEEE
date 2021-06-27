@@ -1,5 +1,6 @@
 import {app} from '../firebase';
 import 'firebase/firestore';
+import firebase from 'firebase/app'
 const db = app.firestore();
 
 
@@ -35,8 +36,12 @@ const prepareGame = async(current_user_name,current_user_uid,wait, result) =>{
             users : [{
                 id : current_user_uid,
                 name : current_user_name,
-                score : 0
-            }]
+                score : 0,
+                totalsolved : 0
+            }],
+            turntochoosequestion : current_user_uid,
+            turnuserindex : 0,
+            currentquestion : ""
         });
         
         result({success:true, link: docref.id});
@@ -45,6 +50,30 @@ const prepareGame = async(current_user_name,current_user_uid,wait, result) =>{
     }
 }
 
+const joinGame = async(room_id, current_user_name, current_user_uid, answersList, wait, result) =>{
+    wait();
+    try{
+        var board1d = shuffle(answersList.map(ans => {return {value : ans, state : false}})); //1 D board created
+
+        //convert the 1D array to 2D board
+        var board2d = [];
+        while(board1d.length) board2d.push({row : board1d.splice(0,5)});
+
+        await db.collection('gamerooms').doc(room_id).update({
+            [current_user_uid] : board2d
+        });
+        await db.collection('realtimestates').doc(room_id).update({
+            users : firebase.firestore.FieldValue.arrayUnion({
+                id : current_user_uid,
+                name : current_user_name,
+                score : 0
+            })
+        });
+        result({success:true, message : "User Joined",board : board2d});
+    }catch(err){
+        result({success:false, message: err});
+    }
+}
 
 const SetData = async(collection,document,data,wait,result) =>{
     wait();
@@ -84,5 +113,34 @@ const getRoom = (doc_id, wait,result) =>{
     });
 };
 
+const getUpdate = (room_id,wait, result) => {
+    wait();
+    try{
+        const unsubscribe = db.collection('realtimestates').doc(room_id).onSnapshot(doc => {
+            if (!doc.exists) {
+                result({"success":false,"message": "Document not found", unsubscribeFuntion : unsubscribe});
+            } else {
+                result({"success":true,"data":doc.data(),unsubscribeFuntion : unsubscribe});
+            }
+        });
+    }catch(err){
+        result({success:false, message: err});
+    }
+    
+}
 
-export {prepareGame, SetData, getRoom};
+const questionChoosed = async(room_id, currentquestion ,questionstate,nextuserindex, nextuserid, wait, result) =>{
+    wait();
+    try{
+        await db.collection('realtimestates').doc(room_id).update({
+            currentquestion : currentquestion,
+            questionstate : questionstate,
+            turnuserindex : nextuserindex,
+            turntochoosequestion : nextuserid
+        });
+        result({success:true, message : "player choosed question"});
+    }catch(err){
+        result({success:false, message: err});
+    }
+}
+export {prepareGame, SetData, getRoom, joinGame, getUpdate, questionChoosed};

@@ -1,17 +1,36 @@
 import React, {useEffect, useState} from 'react'
 import { useParams } from 'react-router';
-import { getRoom } from '../../Services/game';
+import {useHistory} from 'react-router-dom';
+import { getRoom, getUpdate, joinGame, questionChoosed } from '../../Services/game';
 import { useAuth } from '../../authcontext';
 import GameNavbar from './GameNavbar';
 import { Container,Row, Col,ListGroup,Modal,Button } from 'react-bootstrap'
+import './maingame.css';
 
 const MainGame = () => {
     const { currentUser } = useAuth();
+    const history = useHistory()
     const {roomId} = useParams();
-    const [isMember, setIsMember] = useState(false);
+    const [isMember, setIsMember] = useState(true);
     const [questions, setQuestions] = useState([]);
-    const [answers, setAnswers] = useState([]);
+    const [answersList, setAnswersList] = useState([]);
     const [createdBy, setCreatedBy] = useState("");
+    const [board, setBoard] = useState([{
+        row : [{
+            value:"",
+            state:false
+        }]
+    }]);
+    const [usersList, setUsersList] = useState([{
+        id : "",
+        name : "",
+        score : 0
+    }]);
+    const [questionState, setQuestionState] = useState(new Array(25).fill(false)); 
+
+    const [turnToChooseQuestion, setTurnToChooseQuestion] = useState("");
+    const [turnToChooseIndex, setTurnToChooseIndex] = useState(0);
+    const [currentQuestion, setCurrentQuestion] = useState("");
     
     useEffect(() => {
         getRoom(roomId, ()=>{
@@ -22,62 +41,146 @@ const MainGame = () => {
                 setCreatedBy(response.data.createdby)
                 if(!response.data.hasOwnProperty(currentUser.uid)){
                     setIsMember(false);
-                    setAnswers(response.data.answerset);
+                    setAnswersList(response.data.answerset);
                 }else{
                     setIsMember(true);
+                    setBoard(response.data[currentUser.uid])
                 }
             }
         });
     }, [roomId, currentUser])
 
-    const handleCloseJoinModel = () =>{
+    useEffect(() => {
+        getUpdate(roomId,()=>{
+            //loading function
+        },response => {
+            if(response.success){
+                setUsersList(response.data.users);
+                setQuestionState(response.data.questionstate);
+                setTurnToChooseQuestion(response.data.turntochoosequestion);
+                setTurnToChooseIndex(response.data.turnuserindex);
+                setCurrentQuestion(response.data.currentquestion);
+            }else{
+                console.log(response.message)
+            }
+        });
+    }, [roomId, currentUser])
 
+
+    const handleExit = () =>{
+        history.push("/")
+    }
+
+    const handleJoinClick = () =>{
+        joinGame(roomId, currentUser.displayName, currentUser.uid, answersList,()=>{
+            //loading function
+        },response => {
+            if(response.success){
+                setIsMember(true);
+                setBoard(response.board)
+            }else{
+                console.log(response)
+            }
+        });
     }
     const JoinModel = () =>{
         return (
             <>
-              <Modal show={!isMember} onHide={handleCloseJoinModel}>
+              <Modal show={!isMember} onHide={handleExit}>
                 <Modal.Header closeButton>
                   <Modal.Title>Join Game!!</Modal.Title>
                 </Modal.Header>
-                <Modal.Body>Room Created By : {currentUser.displayName}</Modal.Body>
+                <Modal.Body>Room Created By : <b>{currentUser.displayName}</b></Modal.Body>
                 <Modal.Footer>
-                  <Button variant="secondary" onClick={handleCloseJoinModel}>
+                  <Button variant="secondary" onClick={handleExit}>
                     Close
                   </Button>
-                  <Button variant="primary" onClick={handleCloseJoinModel}>
-                    Save Changes
+                  <Button variant="primary" onClick={handleJoinClick}>
+                    JOIN
                   </Button>
                 </Modal.Footer>
               </Modal>
             </>
         );
     }
+    const handleQuestionChoosed = (currentquestion, questionindex) =>{
+        if(turnToChooseQuestion === currentUser.uid){
+            var newquestionstate = questionState;
+            newquestionstate[questionindex] = true; 
+            var nextUserIndex = 0;
+            if(turnToChooseIndex === usersList.length-1){
+                nextUserIndex = 0;
+            }else{
+                nextUserIndex = turnToChooseIndex+1;
+            }
+            const nextUserId = usersList[nextUserIndex].id;
+            questionChoosed(roomId,currentquestion,newquestionstate,nextUserIndex, nextUserId,()=>{
+                //loading screen functions
+
+            },response=>{
+                if(!response.success){
+                    //check your  network connection error
+                }
+            })
+        }else{
+            //alert box with message this is not your turn to choose question.
+            console.log("not your turn to choose question");
+        }
+    }
+
     return (
         <div>
             <JoinModel/>
             <GameNavbar
                 roomCreatedby={createdBy}
                 currentUser={currentUser.displayName}
+                exitFunction = {handleExit}
             />
             <Container fluid>
                 <Row>
                     <Col xs={6} md={3}>
-                        <ListGroup className="mt-2" scrollable={true} style={{height:'85vh',overflow:'hidden',overflowY:'scroll'}}>
+                        <ListGroup className={`mt-2 question-list ${turnToChooseQuestion === currentUser.uid ? "highlight-div" : ""}`} scrollable={true} >
                             {questions.map((response, key)=>{
-                                return <ListGroup.Item key={key} action style={{cursor:'pointer'}}>
+                                return <ListGroup.Item key={key} action style={{cursor:'pointer'}} onClick={() => handleQuestionChoosed(response.question, key)}>
                                     {response.description !== "" ? "Topic : "+response.description : ""}
                                     {response.description !== "" ? <br/> : ""}
-                                    Q{key+1}. : <b>{response.question} </b>
+                                    Q{key+1}. : <span style={{textDecoration : questionState[key] ? 'line-through' : 'none'}}><b>{response.question} </b></span> 
                                 </ListGroup.Item>;
                             })}
                         </ListGroup>
                     </Col>
-                    <Col xs={12} md={6} className="bg-warning">
-                        xs=12 md=8
+                    <Col xs={12} md={6} >
+                        <div className="my-2 detail-card">
+                            question : <span className="question" >{currentQuestion}&nbsp;</span>
+                        </div>
+                        <div className="game-board">
+                            <table className="rounded">
+                                {board.map((row, row_key)=>{
+                                    return <tr key={row_key}>
+                                        {
+                                            row.row.map((cell,cell_key)=>{
+                                                return <td className="answer-cell" bgcolor="#e0ac69"  key={cell_key}>
+                                                    {cell.value}
+                                                </td>;
+                                            })
+                                        }
+                                        <td className="bingo-text">B</td>
+                                    </tr>
+                                })}
+                            </table>
+                        </div>
                     </Col>
-                    <Col xs={6} md={3} className="bg-primary">
-                        xs=6 md=4
+                    <Col xs={6} md={3} className="bg-primary pb-4" >
+                        <h5>Other Players</h5>
+                        <ListGroup className=" users-list" scrollable={true} >
+                            {usersList.map((response, key)=>{
+                                return <ListGroup.Item key={key} action style={{cursor:'pointer'}}>
+                                    {currentUser.uid === response.id ? <h6>You : {response.name}</h6> : <h6>Player name : {response.name}</h6>}
+                                    <h6>Score : {response.score}</h6>
+                                    <h6>Instruction : {turnToChooseQuestion === currentUser.uid && currentUser.uid === response.id ? "Your turn to choose question" : ""}</h6>
+                                </ListGroup.Item>;
+                            })}
+                        </ListGroup>
                     </Col>
                 </Row>
             </Container>

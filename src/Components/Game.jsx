@@ -33,6 +33,7 @@ const Game=()=> {
 
   const startGame = () =>{
     prepareGame(currentUser.displayName,currentUser.uid,()=>{
+        //loading function
         console.log("Loading...");
     },response =>{
         if(response.success){

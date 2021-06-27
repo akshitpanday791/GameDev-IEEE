@@ -1,7 +1,7 @@
 import React from 'react'
-import { Navbar,Container,Nav } from 'react-bootstrap'
+import { Navbar,Container,Nav,Button } from 'react-bootstrap'
 
-const GameNavbar = ({roomCreatedby, currentUser, joinUrl}) => {
+const GameNavbar = ({roomCreatedby, currentUser, exitFunction}) => {
     const [copyStatus, setCopyStatus] = React.useState("Click link to Copy");
     return (
         <Navbar collapseOnSelect expand="lg" bg="dark" variant="dark">
@@ -16,6 +16,9 @@ const GameNavbar = ({roomCreatedby, currentUser, joinUrl}) => {
                         </Nav.Link>
                         <Nav.Link active onClick={()=>{navigator.clipboard.writeText(window.location.href); setCopyStatus("Copied!")}}>
                             JoinUrl : <b>{window.location.href}</b><br/> <span>({copyStatus})</span>
+                        </Nav.Link>
+                        <Nav.Link >
+                            <Button variant="danger" onClick={exitFunction}>Exit</Button> <br/><br/>
                         </Nav.Link>
                     </Nav>
                 </Navbar.Collapse>
