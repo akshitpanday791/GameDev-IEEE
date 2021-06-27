@@ -41,7 +41,8 @@ const prepareGame = async(current_user_name,current_user_uid,wait, result) =>{
             }],
             turntochoosequestion : current_user_uid,
             turnuserindex : 0,
-            currentquestion : ""
+            currentquestion : "",
+            currentquestionindex : 0
         });
         
         result({success:true, link: docref.id});
@@ -129,11 +130,12 @@ const getUpdate = (room_id,wait, result) => {
     
 }
 
-const questionChoosed = async(room_id, currentquestion ,questionstate,nextuserindex, nextuserid, wait, result) =>{
+const questionChoosed = async(room_id, currentquestion,questionindex ,questionstate,nextuserindex, nextuserid, wait, result) =>{
     wait();
     try{
         await db.collection('realtimestates').doc(room_id).update({
             currentquestion : currentquestion,
+            currentquestionindex : questionindex,
             questionstate : questionstate,
             turnuserindex : nextuserindex,
             turntochoosequestion : nextuserid

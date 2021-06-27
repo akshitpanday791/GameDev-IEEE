@@ -31,7 +31,8 @@ const MainGame = () => {
     const [turnToChooseQuestion, setTurnToChooseQuestion] = useState("");
     const [turnToChooseIndex, setTurnToChooseIndex] = useState(0);
     const [currentQuestion, setCurrentQuestion] = useState("");
-    
+    const [currentQuestionIndex, setCurrentQuestionIndex] = useState(0);
+    const [status, setStatus] = useState("");
     useEffect(() => {
         getRoom(roomId, ()=>{
             //loading
@@ -60,6 +61,7 @@ const MainGame = () => {
                 setTurnToChooseQuestion(response.data.turntochoosequestion);
                 setTurnToChooseIndex(response.data.turnuserindex);
                 setCurrentQuestion(response.data.currentquestion);
+                setCurrentQuestionIndex(response.data.currentquestionindex);
             }else{
                 console.log(response.message)
             }
@@ -114,7 +116,7 @@ const MainGame = () => {
                 nextUserIndex = turnToChooseIndex+1;
             }
             const nextUserId = usersList[nextUserIndex].id;
-            questionChoosed(roomId,currentquestion,newquestionstate,nextUserIndex, nextUserId,()=>{
+            questionChoosed(roomId,currentquestion,questionindex,newquestionstate,nextUserIndex, nextUserId,()=>{
                 //loading screen functions
 
             },response=>{
@@ -125,6 +127,22 @@ const MainGame = () => {
         }else{
             //alert box with message this is not your turn to choose question.
             console.log("not your turn to choose question");
+        }
+    }
+    const handleAnswerCellClick = (answer, row, col) => {
+        if(!board[row].row[col].state && currentQuestion !== ""){
+            //check if answer correct
+            if(answer === questions[currentQuestionIndex].answer){
+                //correct answer
+                setStatus("Congrats!! your answer is correct. you got 1 point");
+
+            }else{
+                //wrong answer
+                setStatus("your answer is Wrong!!. you will not get point. Correct answer will be marked");
+            }
+        }else{
+            //warning message block is already selected
+            console.log("block is already selected")
         }
     }
 
@@ -151,7 +169,8 @@ const MainGame = () => {
                     </Col>
                     <Col xs={12} md={6} >
                         <div className="my-2 detail-card">
-                            question : <span className="question" >{currentQuestion}&nbsp;</span>
+                            question : <span className="question" >{currentQuestion}&nbsp;</span><br/>
+                            Status : <span >{status}&nbsp;</span>
                         </div>
                         <div className="game-board">
                             <table className="rounded">
@@ -159,7 +178,7 @@ const MainGame = () => {
                                     return <tr key={row_key}>
                                         {
                                             row.row.map((cell,cell_key)=>{
-                                                return <td className="answer-cell" bgcolor="#e0ac69"  key={cell_key}>
+                                                return <td className="answer-cell" bgcolor="#e0ac69" onClick={()=>{handleAnswerCellClick(cell.value, row_key, cell_key)}}  key={cell_key}>
                                                     {cell.value}
                                                 </td>;
                                             })
@@ -177,7 +196,7 @@ const MainGame = () => {
                                 return <ListGroup.Item key={key} action style={{cursor:'pointer'}}>
                                     {currentUser.uid === response.id ? <h6>You : {response.name}</h6> : <h6>Player name : {response.name}</h6>}
                                     <h6>Score : {response.score}</h6>
-                                    <h6>Instruction : {turnToChooseQuestion === currentUser.uid && currentUser.uid === response.id ? "Your turn to choose question" : ""}</h6>
+                                    <h6>Status : {turnToChooseQuestion === response.id ? "turn to choose question" : ""}</h6>
                                 </ListGroup.Item>;
                             })}
                         </ListGroup>
