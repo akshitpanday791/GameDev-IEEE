@@ -1,0 +1,18 @@
+.navbar-brand{
+    position: absolute;
+    left: 5px;
+}
+
+.exit{
+    position: absolute;
+    right: 300px;  
+}
+
+.link{
+    padding: 10px;
+    margin: center;
+}
+
+.user{
+    left: 10px;
+}
