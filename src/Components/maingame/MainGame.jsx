@@ -4,6 +4,7 @@ import {useHistory} from 'react-router-dom';
 import { getRoom, getUpdate, joinGame, onAnswerSelect, questionChoosed, updatescore } from '../../Services/game';
 import { useAuth } from '../../authcontext';
 import GameNavbar from './GameNavbar';
+import './GameNavbar.css';
 import { Container,Row, Col,ListGroup,Modal,Button } from 'react-bootstrap'
 import './maingame.css';
 
