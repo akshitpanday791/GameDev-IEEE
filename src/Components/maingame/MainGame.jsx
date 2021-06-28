@@ -67,7 +67,13 @@ const MainGame = () => {
                 setTurnToChooseIndex(response.data.turnuserindex);
                 setCurrentQuestion(response.data.currentquestion);
                 setCurrentQuestionIndex(response.data.currentquestionindex);
-                setTimeToAnswer(response.data.timetoanswer);
+                var tempTimeToAnswer = (response.data.timetoanswer).toDate();
+                if(tempTimeToAnswer <= Date.now()){
+                    setTimeToAnswer(false)
+                }else{
+                    setTimeToAnswer(response.data.timetoanswer);
+                }
+                //check time past future . future set time if not false
                 setResultPosition(response.data.position);
                 setNoOfQuestionCompleted(response.data.noOfQuestionCompleted);
             }else{

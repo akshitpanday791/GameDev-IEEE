@@ -177,4 +177,5 @@ const updatescore = async(roomid, newuserList,resultPosition ,wait, result) =>{
     }
 }
 
+
 export {prepareGame, SetData, getRoom, joinGame, getUpdate, questionChoosed, onAnswerSelect, updatescore};
