@@ -6,6 +6,7 @@ import { useAuth } from '../../authcontext';
 import GameNavbar from './GameNavbar';
 import { Container,Row, Col,ListGroup,Modal,Button } from 'react-bootstrap'
 import './maingame.css';
+import Countdown from 'react-countdown';
 
 const MainGame = () => {
     const { currentUser } = useAuth();
@@ -32,7 +33,11 @@ const MainGame = () => {
     const [turnToChooseIndex, setTurnToChooseIndex] = useState(0);
     const [currentQuestion, setCurrentQuestion] = useState("");
     const [currentQuestionIndex, setCurrentQuestionIndex] = useState(0);
+    const [timeToAnswer, setTimeToAnswer] = useState(false);
     const [status, setStatus] = useState("");
+    const [gameWonVisible, setGameWonVisible] = useState(false);
+    const [resultPosition, setResultPosition] = useState(0);
+    const [noOfQuestionCompleted, setNoOfQuestionCompleted] = useState(0);
     useEffect(() => {
         getRoom(roomId, ()=>{
             //loading
@@ -62,6 +67,9 @@ const MainGame = () => {
                 setTurnToChooseIndex(response.data.turnuserindex);
                 setCurrentQuestion(response.data.currentquestion);
                 setCurrentQuestionIndex(response.data.currentquestionindex);
+                setTimeToAnswer(response.data.timetoanswer);
+                setResultPosition(response.data.position);
+                setNoOfQuestionCompleted(response.data.noOfQuestionCompleted);
             }else{
                 console.log(response.message)
             }
@@ -69,6 +77,11 @@ const MainGame = () => {
     }, [roomId, currentUser])
 
 
+    const getFutureTimeStamp = (minutesToAdd) => {
+        var currentDate = new Date();
+        return new Date(currentDate.getTime() + minutesToAdd*60000);
+    }
+    
     const handleExit = () =>{
         history.push("/")
     }
@@ -105,27 +118,53 @@ const MainGame = () => {
             </>
         );
     }
+
+    const GameWonModel = () =>{
+        return (
+            <>
+              <Modal show={gameWonVisible} aria-labelledby="contained-modal-title-vcenter" centered>
+                <Modal.Header closeButton>
+                  <Modal.Title>Game Result </Modal.Title>
+                </Modal.Header>
+                <Modal.Body>
+                    {usersList.map((response, key)=> {
+                        return <div key = {key}><h6>{response.name} -- Score : {response.score}</h6></div>
+                    })}
+                </Modal.Body>
+                <Modal.Footer>
+                  <Button variant="primary" onClick={handleExit}>
+                    Exit
+                  </Button>
+                </Modal.Footer>
+              </Modal>
+            </>
+        );
+    }
     const handleQuestionChoosed = (currentquestion, questionindex) =>{
-        if(turnToChooseQuestion === currentUser.uid){
-            var newquestionstate = questionState;
-            newquestionstate[questionindex] = true; 
-            var nextUserIndex = 0;
-            if(turnToChooseIndex === usersList.length-1){
-                nextUserIndex = 0;
-            }else{
-                nextUserIndex = turnToChooseIndex+1;
-            }
-            const nextUserId = usersList[nextUserIndex].id;
-            questionChoosed(roomId,currentquestion,questionindex,newquestionstate,nextUserIndex, nextUserId,()=>{
-                //loading screen functions
-            },response=>{
-                if(!response.success){
-                    //check your  network connection error
+        if(!timeToAnswer){
+            if(turnToChooseQuestion === currentUser.uid){
+                var newquestionstate = questionState;
+                newquestionstate[questionindex] = true; 
+                var nextUserIndex = 0;
+                if(turnToChooseIndex === usersList.length-1){
+                    nextUserIndex = 0;
+                }else{
+                    nextUserIndex = turnToChooseIndex+1;
                 }
-            })
+                const nextUserId = usersList[nextUserIndex].id;
+                questionChoosed(roomId,currentquestion,questionindex,newquestionstate,nextUserIndex, nextUserId, getFutureTimeStamp(0.3),()=>{
+                    //loading screen functions
+                },response=>{
+                    if(!response.success){
+                        //check your  network connection error
+                    }
+                })
+            }else{
+                //alert box with message this is not your turn to choose question.
+                console.log("not your turn to choose question");
+            }
         }else{
-            //alert box with message this is not your turn to choose question.
-            console.log("not your turn to choose question");
+            setStatus("Wait for other to answer the correct answer. wait for timer to end");
         }
     }
     const getCurrentAnswerIndex = () => {
@@ -147,37 +186,99 @@ const MainGame = () => {
         }
     }
 
+    const timeTOAnserOver = () => {
+        setTimeToAnswer(false);
+        const correctAnswerIndex = getCurrentAnswerIndex();
+        if(!board[correctAnswerIndex.row].row[correctAnswerIndex.col].state){
+            //wrong answer
+            setStatus("your answer is Wrong!!. you will not get point. Correct answer will be marked");
+            //mark correct answer
+            updateStateOfCell(correctAnswerIndex.row, correctAnswerIndex.col, true);
+            onAnswerSelect(roomId, currentUser.uid, board, ()=>{
+            //loading screen function
+            },response=>{
+                if(!response.success){
+                    //error nework connectivity
+                }
+            });
+        }
+    }
+    const updateStateOfCell = (row, col, state) => {
+        let newBoard = [...board];
+        newBoard[row].row[col].state = state;
+        setBoard(newBoard);
+    }
+
     const handleAnswerCellClick = (answer, row, col) => {
         if(!board[row].row[col].state){
             if(currentQuestion !== ""){
                 //check if answer correct
-                var newBoard = board;
+                // var newBoard = board;
+                var bingo_row, bingo_col;
+                var newscore = 0;
                 if(answer === questions[currentQuestionIndex].answer){
                     //correct answer
                     setStatus("Congrats!! your answer is correct. you got 1 point");
-                    newBoard[row].row[col].state = true;
                     
-                    //create new userlist
-                    var newuserlist = usersList;
-                    newuserlist[getCurrentUserIndex()].score += 1;
-                    updatescore(roomId, newuserlist, ()=> {
-                        //laoding on screen
-                    }, response => {
-                        if(!response.success){
-                            //error alert message
-                        }
-                    });
+                    updateStateOfCell(row,col, true);
+                    // newBoard[row].row[col].state = true;
+
+                    //setting row col vaue for bingo check
+                    bingo_row = row;
+                    bingo_col = col; 
+                    
+                    //score to be added
+                    newscore = 1;
+                    
                 }else{
                     //wrong answer
-                    setStatus("your answer is Wrong!!. you will not get point. Correct answer will be marked");
+                    setStatus("you have not submitted response, you will not get any point. Correct answer will be marked");
                     //mark correct answer
                     const correctAnswerIndex = getCurrentAnswerIndex();
-                    newBoard[correctAnswerIndex.row].row[correctAnswerIndex.col].state = true;
+                    updateStateOfCell(correctAnswerIndex.row, correctAnswerIndex.col, true);
+
+                    bingo_row = correctAnswerIndex.row;
+                    bingo_col = correctAnswerIndex.col;
+                    newscore = 0;
                 }
-                onAnswerSelect(roomId, currentUser.uid, newBoard, ()=>{
+                //check for bingo
+                const bingovalue = noOfBingoForCell(bingo_row, bingo_col);
+                if(bingovalue > 0 || newscore > 0){
+                    //create new userlist
+                    var newuserlist = usersList;
+                    if(newscore > 0) newuserlist[getCurrentUserIndex()].score += newscore;
+                    if(bingovalue > 0){
+                        newuserlist[getCurrentUserIndex()].bingo += bingovalue;
+                        newuserlist[getCurrentUserIndex()].score +=(2*bingovalue);
+                    } 
+
+                    //check if win
+                    if(newuserlist[getCurrentUserIndex()].bingo + bingovalue >= 5){
+                        //you won
+                        newuserlist[getCurrentUserIndex()].score += (3*bingovalue);
+                        // newuserlist[getCurrentUserIndex()].score += (5 - resultPosition);
+                        // setResultPosition(resultPosition+1);
+                    }
+                    updatescore(roomId, newuserlist, resultPosition, ()=> {
+                        //laoding on screen
+                    }, response => {
+                        if(response.success){
+
+                        }else{
+                            //error alert message
+
+                        }
+                    });
+                }
+                onAnswerSelect(roomId, currentUser.uid, board, ()=>{
                     //loading screen function
                 },response=>{
-                    if(!response.success){
+                    if(response.success){
+                        if(noOfQuestionCompleted > 24){
+                            //game ended result screen
+                            setGameWonVisible(true);
+                        }
+                    }else{
                         //error nework connectivity
                     }
                 });
@@ -190,10 +291,42 @@ const MainGame = () => {
         }
     }
 
-
+    const noOfBingoForCell = (row, col) => {
+        const checkRow = (row) =>{
+            for(var i = 0; i < 5; i++){
+                if(!board[row].row[i].state) return false; 
+            }
+            return true;
+        }
+        const checkColumn = (col) => {
+            for(var i = 0; i < 5; i++){
+                if(!board[i].row[col].state) return false; 
+            }
+            return true;
+        }
+        const checkRightDigonal = () => {
+            for(var i = 0; i < 5; i++){
+                if(!board[i].row[i].state) return false; 
+            }
+            return true;
+        }
+        const checkLeftDiagonal = () => {
+            for(var i = 0; i < 5; i++){
+                if(!board[i].row[4-i].state) return false; 
+            }
+            return true;
+        }
+        var noOfBingo = 0;
+        if(checkRow(row)) noOfBingo++;
+        if(checkColumn(col)) noOfBingo++;
+        if(row === col && checkRightDigonal()) noOfBingo++;
+        if(row+col === 4 && checkLeftDiagonal()) noOfBingo++;
+        return noOfBingo; 
+    }
     return (
         <div>
             <JoinModel/>
+            <GameWonModel/>
             <GameNavbar
                 roomCreatedby={createdBy}
                 currentUser={currentUser.displayName}
@@ -213,9 +346,8 @@ const MainGame = () => {
                         </ListGroup>
                     </Col>
                     <Col xs={12} md={6} >
-                        <div className="my-2 detail-card">
-                            question : <span className="question" >{currentQuestion}&nbsp;</span><br/>
-                            Status : <span >{status}&nbsp;</span>
+                        <div className="my-2 detail-card rounded bg-light p-2">
+                            question : <span className="current-question" >{currentQuestion}&nbsp;</span><br/>
                         </div>
                         <div className="game-board">
                             <table className="rounded">
@@ -234,17 +366,21 @@ const MainGame = () => {
                             </table>
                         </div>
                     </Col>
-                    <Col xs={6} md={3} className="bg-primary pb-4" >
+                    <Col xs={6} md={3} className=" pb-4" >
                         <h5>Other Players</h5>
                         <ListGroup className=" users-list" scrollable={true} >
                             {usersList.map((response, key)=>{
                                 return <ListGroup.Item key={key} action style={{cursor:'pointer'}}>
                                     {currentUser.uid === response.id ? <h6>You : {response.name}</h6> : <h6>Player name : {response.name}</h6>}
-                                    <h6>Score : {response.score}</h6>
+                                    <h6>Score : {response.score} &nbsp; bingo : {response.bingo}</h6>
                                     <h6>Status : {turnToChooseQuestion === response.id ? "turn to choose question" : ""}</h6>
                                 </ListGroup.Item>;
                             })}
                         </ListGroup>
+                        <div class="rounded bg-light p-2 my-2">
+                            Timer : <span class="timer"> {timeToAnswer ? <Countdown date={timeToAnswer.toDate() + 10000} onComplete={timeTOAnserOver} /> : ""}</span><br/>
+                            Assitant : <span class="assistant-msg" >{status}&nbsp;</span>
+                        </div>
                     </Col>
                 </Row>
             </Container>

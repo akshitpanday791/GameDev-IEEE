@@ -7,7 +7,8 @@
 
 .detail-card .question{
     font-weight: 500;
-    font-size: 16px;
+    font-size: 100px;
+
 }
 
 .game-board table{
@@ -43,11 +44,27 @@
 }
 
 .users-list{
-    height: 85vh;
+    height: 60vh;
     overflow: hidden;
     overflow-y: scroll;
 }
 
 .highlight-div {
     border: 4px solid red;
+}
+
+.timer {
+    font-weight: 600;
+    font-size: 24px;
+    color: red;
+}
+
+.assistant-msg {
+    font-size: 18px;
+    color: blue;
+    font-weight: 500;
+}
+
+.current-question{
+    font-weight: 600;
 }

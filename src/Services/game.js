@@ -33,16 +33,19 @@ const prepareGame = async(current_user_name,current_user_uid,wait, result) =>{
         });
         await db.collection('realtimestates').doc(docref.id).set({
             questionstate : new Array(25).fill(false),
+            position : 0,
             users : [{
                 id : current_user_uid,
                 name : current_user_name,
                 score : 0,
-                totalsolved : 0
+                bingo : 0
             }],
             turntochoosequestion : current_user_uid,
             turnuserindex : 0,
             currentquestion : "",
-            currentquestionindex : 0
+            currentquestionindex : 0,
+            timetoanswer : 0,
+            noOfQuestionCompleted : 0
         });
         
         result({success:true, link: docref.id});
@@ -67,7 +70,8 @@ const joinGame = async(room_id, current_user_name, current_user_uid, answersList
             users : firebase.firestore.FieldValue.arrayUnion({
                 id : current_user_uid,
                 name : current_user_name,
-                score : 0
+                score : 0,
+                bingo : 0
             })
         });
         result({success:true, message : "User Joined",board : board2d});
@@ -130,7 +134,7 @@ const getUpdate = (room_id,wait, result) => {
     
 }
 
-const questionChoosed = async(room_id, currentquestion,questionindex ,questionstate,nextuserindex, nextuserid, wait, result) =>{
+const questionChoosed = async(room_id, currentquestion,questionindex ,questionstate,nextuserindex, nextuserid,timetoanswer, wait, result) =>{
     wait();
     try{
         await db.collection('realtimestates').doc(room_id).update({
@@ -138,7 +142,9 @@ const questionChoosed = async(room_id, currentquestion,questionindex ,questionst
             currentquestionindex : questionindex,
             questionstate : questionstate,
             turnuserindex : nextuserindex,
-            turntochoosequestion : nextuserid
+            turntochoosequestion : nextuserid,
+            timetoanswer : timetoanswer,
+            noOfQuestionCompleted : firebase.firestore.FieldValue.increment(1)
         });
         result({success:true, message : "player choosed question"});
     }catch(err){
@@ -158,11 +164,12 @@ const onAnswerSelect = async(roomid, current_user_uid, newboard, wait, result) =
     }
 }
 
-const updatescore = async(roomid, newuserList, wait, result) =>{
+const updatescore = async(roomid, newuserList,resultPosition ,wait, result) =>{
     wait();
     try{
         await db.collection('realtimestates').doc(roomid).update({
-            users : newuserList
+            users : newuserList,
+            position : resultPosition
         });
         result({success:true, message : "player choosed question"});
     }catch(err){
