@@ -81,7 +81,7 @@ const MainGame = () => {
                 setResultPosition(response.data.position);
                 setNoOfQuestionCompleted(response.data.noOfQuestionCompleted);
             }else{
-                console.log(response.message)
+                setStatus(response.message)
             }
         });
     }, [roomId, currentUser])
@@ -104,7 +104,7 @@ const MainGame = () => {
                 setIsMember(true);
                 setBoard(response.board)
             }else{
-                console.log(response)
+                setStatus(response)
             }
         });
     }
@@ -171,7 +171,7 @@ const MainGame = () => {
                 })
             }else{
                 //alert box with message this is not your turn to choose question.
-                console.log("not your turn to choose question");
+                setStatus("not your turn to choose question");
             }
         }else{
             setStatus("Wait for other to answer the correct answer. wait for timer to end");
@@ -297,7 +297,7 @@ const MainGame = () => {
             }
         }else{
             //warning message :  answer cell is already selected
-            console.log("block is already selected")
+            setStatus("block is already selected")
         }
     }
 
