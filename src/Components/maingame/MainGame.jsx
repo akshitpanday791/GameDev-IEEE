@@ -347,7 +347,7 @@ const MainGame = () => {
                     <Col xs={6} md={3}>
                         <ListGroup className={`mt-2 question-list ${turnToChooseQuestion === currentUser.uid ? "highlight-div" : ""}`} scrollable={true} >
                             {questions.map((response, key)=>{
-                                return <ListGroup.Item key={key} action style={{cursor:'pointer'}} onClick={() => handleQuestionChoosed(response.question, key)}>
+                                return <ListGroup.Item className="listitem" key={key} action style={{cursor:'pointer'}} onClick={() => handleQuestionChoosed(response.question, key)}>
                                     {response.description !== "" ? "Topic : "+response.description : ""}
                                     {response.description !== "" ? <br/> : ""}
                                     Q{key+1}. : <span style={{textDecoration : questionState[key] ? 'line-through' : 'none'}}><b>{response.question} </b></span> 
