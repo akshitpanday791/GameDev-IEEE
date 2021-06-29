@@ -3,6 +3,7 @@ import { Modal, Button, Alert } from "react-bootstrap"
 import { useAuth } from "../authcontext"
 import { useHistory} from "react-router-dom"
 import { prepareGame } from "../Services/game"
+import './Game.css'
 
 
 const Game=()=> {
@@ -45,23 +46,23 @@ const Game=()=> {
   }
 
   return (
-  <React.Fragment>
-    {error && <Alert  variant="danger">{error}</Alert>}
-    <Modal.Dialog>
-        <Modal.Header closeButton>
-          <Modal.Title>Hii <i>{currentUser.displayName}</i>!!</Modal.Title>
-        </Modal.Header>
-
-        <Modal.Body>
+    <React.Fragment>
+            <div className="wrapper">
+            <form className="form">
+                <h2>Heya <i>{currentUser.displayName}</i> !!!</h2>
+                {error && <Alert variant="danger">{error}</Alert>}
+                <Modal.Body>
           <div className="d-grid gap-2 ">
-            <Button variant="primary">Resume</Button><br/><br/>
-            <Button variant="secondary" onClick={startGame}>Start Game</Button><br/><br/>
-            <Button variant="warning" onClick={sendVerificationEmail}>Send Verification Link</Button><br/><br/>
-            <Button variant="danger" onClick={handleLogout}>logout</Button> <br/><br/>
+            <Button className="primary">Resume</Button><br/><br/>
+            <Button className="secondary" onClick={startGame}>Start Game</Button><br/><br/>
+            <Button className="warning" onClick={sendVerificationEmail}>Send Verification Link</Button><br/><br/>
+            <Button className="danger" onClick={handleLogout}>logout</Button> <br/><br/>
           </div>
         </Modal.Body>
-    </Modal.Dialog>
-    </React.Fragment>
+            </form>
+        </div>
+        )
+       </React.Fragment>
   )
 }
 export default Game;
