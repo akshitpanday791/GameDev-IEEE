@@ -353,7 +353,7 @@ const MainGame = () => {
                     </Col>
                     <Col xs={12} md={6} >
                         <div className="my-2 detail-card rounded bg-light p-2">
-                            question : <span className="current-question" >{currentQuestion}&nbsp;</span><br/>
+                            Question : <span className="current-question" >{currentQuestion}&nbsp;</span><br/>
                         </div>
                         <div className="game-board">
                             <table className="rounded">
@@ -372,7 +372,7 @@ const MainGame = () => {
                             </table>
                         </div>
                     </Col>
-                    <Col xs={6} md={3} className=" pb-4" >
+                    <Col xs={6} md={3} className="bg" >
                         <h5>Other Players</h5>
                         <ListGroup className=" users-list" scrollable={true} >
                             {usersList.map((response, key)=>{
