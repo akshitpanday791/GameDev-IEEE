@@ -44,7 +44,7 @@ const prepareGame = async(current_user_name,current_user_uid,wait, result) =>{
             turnuserindex : 0,
             currentquestion : "",
             currentquestionindex : 0,
-            timetoanswer : 0,
+            timetoanswer : false,
             noOfQuestionCompleted : 0
         });
         
