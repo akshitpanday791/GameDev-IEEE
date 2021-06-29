@@ -1,5 +1,5 @@
 import React from 'react';
-import Logo from '../../Assets/Images/logo.jpeg';
+import Logo from '../../Assets/Images/circled-logo.png';
 import { Navbar,Container,Nav,Button } from 'react-bootstrap'
 import './GameNavbar.css'
 
