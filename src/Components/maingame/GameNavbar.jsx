@@ -16,7 +16,7 @@ const GameNavbar = ({roomCreatedby, currentUser, exitFunction}) => {
                              Room Created By : <b>{roomCreatedby}</b><br/>
                              Current User : <b>{currentUser}</b>
                         </Nav.Link>
-                        <Nav.Link active onClick={()=>{navigator.clipboard.writeText(window.location.href); setCopyStatus("Copied!")}} className="link">
+                        <Nav.Link active onClick={()=>{navigator.clipboard.writeText(window.location.href); setCopyStatus("URL copied to Clipboard")}} className="link">
                             JoinUrl : <b>{window.location.href}</b><br/> <span>({copyStatus})</span>
                         </Nav.Link>
                         <Nav.Link >
