@@ -1,4 +1,5 @@
-import React from 'react'
+import React from 'react';
+import Logo from '../../Assets/Images/logo.jpeg';
 import { Navbar,Container,Nav,Button } from 'react-bootstrap'
 import './GameNavbar.css'
 
@@ -7,7 +8,7 @@ const GameNavbar = ({roomCreatedby, currentUser, exitFunction}) => {
     return (
         <Navbar collapseOnSelect expand="lg" bg="dark" variant="dark">
             <Container>
-                <Navbar.Brand href="#home" className="navbar-brand">Bingo Minds</Navbar.Brand>
+                <Navbar.Brand href="/home" className="navbar-brand"><img src={Logo} width="65px" height="65px" /> </Navbar.Brand>
                 <Navbar.Toggle aria-controls="responsive-navbar-nav" />
                 <Navbar.Collapse id="responsive-navbar-nav">
                     <Nav>
