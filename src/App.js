@@ -6,6 +6,7 @@ import Register from './Components/Register';
 import PrivateRoute from './Components/PrivateRoute';
 import Game from './Components/Game';
 import ForgotPassword from "./Components/ForgotPassword.jsx";
+import Home from './Components/HomeScreen';
 import UpdateProfile from './Components/Updateprofile';
 import './App.css';
 import MainGame from './Components/maingame/MainGame';
@@ -17,6 +18,7 @@ const App = () => {
         <Switch>
           <PrivateRoute exact path="/" component={Game} />
           <PrivateRoute path="/updateprofile" component={UpdateProfile} />
+          <Route path="/home" exact component={Home} />
           <Route path="/register" exact component={Register} />
           <Route path="/login" exact component={Login} />  
           <Route path="/leaderboard" exact component={LeaderBoard} />  

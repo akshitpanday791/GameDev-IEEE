@@ -15,7 +15,7 @@ const Game=()=> {
     setError("")
     try {
       await logout()
-       history.push("/");
+       history.push("/home");
     
     } catch {
       setError("Failed to log out")
