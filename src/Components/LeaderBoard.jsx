@@ -19,7 +19,7 @@ class LeaderBoard extends Component {
              accessor: 'score' 
          }]  
       return (  
-            <div className="form">  
+            <div className="rank">  
                 <ReactTable  
                     data={data}  
                     columns={columns}  
