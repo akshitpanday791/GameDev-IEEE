@@ -1,12 +1,35 @@
 import React from 'react'
+import React, { Component } from 'react'; 
 import './LeaderBoard.css'
+import ReactTable from "react-table";
 
-const LeaderBoard = () => {
-    return (
-        <div>
-            <h1>LeaderBoard</h1>
-        </div>
-    )
-}
+class LeaderBoard extends Component {  
+    render() {  
+       const data = [{  
+         
+           }]  
+       const columns = [{  
+         Header: 'Rank',  
+         accessor: 'rank'  
+         },{  
+         Header: 'Name',  
+         accessor: 'name'  
+         },{
+             Header: 'Score', 
+             accessor: 'score' 
+         }]  
+      return (  
+            <div className="form">  
+                <ReactTable  
+                    data={data}  
+                    columns={columns}  
+                    defaultPageSize = {3}  
+                    pageSizeOptions = {[2,4, 6]}  
+                />  
+            </div>        
+      )  
+    }  
+  }  
+  
 
 export default LeaderBoard;
