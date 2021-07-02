@@ -1,4 +1,3 @@
-import React from 'react'
 import React, { Component } from 'react'; 
 import './LeaderBoard.css'
 import ReactTable from "react-table";
