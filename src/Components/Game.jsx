@@ -49,7 +49,7 @@ const Game=()=> {
     <React.Fragment>
             <div className="wrapper">
             <form className="form">
-                <h2>Heya <i>{currentUser.displayName}</i> !!!</h2>
+                <h2>Hi !!! <i>{currentUser.displayName}</i> !!!</h2>
                 {error && <Alert variant="danger">{error}</Alert>}
                 <Modal.Body>
           <div className="d-grid gap-2 ">
