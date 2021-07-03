@@ -38,6 +38,8 @@ const MainGame = () => {
     const [gameWonVisible, setGameWonVisible] = useState(false);
     const [resultPosition, setResultPosition] = useState(0);
     const [noOfQuestionCompleted, setNoOfQuestionCompleted] = useState(0);
+
+    const bingo = ['B','I','N','G','O','B']
     useEffect(() => {
         getRoom(roomId, ()=>{
             //loading
@@ -138,7 +140,7 @@ const MainGame = () => {
             <>
               <Modal show={gameWonVisible} aria-labelledby="contained-modal-title-vcenter" centered>
                 <Modal.Header closeButton>
-                  <Modal.Title className="result">Game Result </Modal.Title>
+                  <Modal.Title >Game Result </Modal.Title>
                 </Modal.Header>
                 <Modal.Body>
                     {sortedScores.map((response, key)=> {
@@ -405,7 +407,7 @@ const MainGame = () => {
                                                 </td>;
                                             })
                                         }
-                                        <td className="bingo-text">B</td>
+                                        <td className="bingo-text">{bingo[row_key]}</td>
                                     </tr>
                                 })}
                             </table>
