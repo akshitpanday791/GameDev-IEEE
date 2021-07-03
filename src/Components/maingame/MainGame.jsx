@@ -134,7 +134,7 @@ const MainGame = () => {
             <>
               <Modal show={gameWonVisible} aria-labelledby="contained-modal-title-vcenter" centered>
                 <Modal.Header closeButton>
-                  <Modal.Title>Game Result </Modal.Title>
+                  <Modal.Title className="result">Game Result </Modal.Title>
                 </Modal.Header>
                 <Modal.Body>
                     {usersList.map((response, key)=> {
