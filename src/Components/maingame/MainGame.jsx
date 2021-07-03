@@ -174,7 +174,7 @@ const MainGame = () => {
                 setStatus("not your turn to choose question");
             }
         }else{
-            setStatus("Wait for other to answer the correct answer. wait for timer to end");
+            setStatus("Wait for other to answer. wait for timer to end!!");
         }
     }
     const getCurrentAnswerIndex = () => {
@@ -204,10 +204,29 @@ const MainGame = () => {
             setStatus("your answer is Wrong!!. you will not get point. Correct answer will be marked");
             //mark correct answer
             updateStateOfCell(correctAnswerIndex.row, correctAnswerIndex.col, true);
+
+            //check bingo
+            const bingovalue = noOfBingoForCell(correctAnswerIndex.row, correctAnswerIndex.col);
+            if(bingovalue > 0){
+                var newuserlist = usersList;
+                newuserlist[getCurrentUserIndex()].bingo += bingovalue;
+                newuserlist[getCurrentUserIndex()].score +=(2*bingovalue);
+                updatescore(roomId, newuserlist, resultPosition, ()=> {
+                    //laoding on screen
+                }, response => {
+                    if(response.success){
+
+                    }else{
+                        //error alert message
+                    }
+                });
+            }
             onAnswerSelect(roomId, currentUser.uid, board, ()=>{
             //loading screen function
             },response=>{
-                if(!response.success){
+                if(response.success){
+                    setCurrentQuestion("");
+                }else{
                     //error nework connectivity
                 }
             });
@@ -242,7 +261,7 @@ const MainGame = () => {
                     
                 }else{
                     //wrong answer
-                    setStatus("you have not submitted response, you will not get any point. Correct answer will be marked");
+                    setStatus("you have not submitted Correct response, you will not get any point. Correct answer will be marked");
                     //mark correct answer
                     const correctAnswerIndex = getCurrentAnswerIndex();
                     updateStateOfCell(correctAnswerIndex.row, correctAnswerIndex.col, true);
@@ -263,12 +282,12 @@ const MainGame = () => {
                     } 
 
                     //check if win
-                    if(newuserlist[getCurrentUserIndex()].bingo + bingovalue >= 5){
-                        //you won
-                        newuserlist[getCurrentUserIndex()].score += (3*bingovalue);
-                        // newuserlist[getCurrentUserIndex()].score += (5 - resultPosition);
-                        // setResultPosition(resultPosition+1);
-                    }
+                    // if(newuserlist[getCurrentUserIndex()].bingo >= 5){
+                    //     //you won
+                    //     newuserlist[getCurrentUserIndex()].score += (3*bingovalue);
+                    //     // newuserlist[getCurrentUserIndex()].score += (5 - resultPosition);
+                    //     // setResultPosition(resultPosition+1);
+                    // }
                     updatescore(roomId, newuserlist, resultPosition, ()=> {
                         //laoding on screen
                     }, response => {
@@ -304,24 +323,28 @@ const MainGame = () => {
     const noOfBingoForCell = (row, col) => {
         const checkRow = (row) =>{
             for(var i = 0; i < 5; i++){
+                console.log("row = "+row+" col = "+i+ "  State : " + board[row].row[i].state);
                 if(!board[row].row[i].state) return false; 
             }
             return true;
         }
         const checkColumn = (col) => {
             for(var i = 0; i < 5; i++){
+                console.log("row = "+i+" col = "+col+ "  State : " + board[i].row[col].state );
                 if(!board[i].row[col].state) return false; 
             }
             return true;
         }
         const checkRightDigonal = () => {
             for(var i = 0; i < 5; i++){
+                console.log("row = "+i+" col = "+i+ " State : " + board[i].row[i].state);
                 if(!board[i].row[i].state) return false; 
             }
             return true;
         }
         const checkLeftDiagonal = () => {
             for(var i = 0; i < 5; i++){
+                console.log("row = "+i+" col = "+(4-i)+ "  State : " + board[i].row[4-i].state);
                 if(!board[i].row[4-i].state) return false; 
             }
             return true;
@@ -345,15 +368,17 @@ const MainGame = () => {
             <Container fluid>
                 <Row>
                     <Col xs={6} md={3}>
-                        <ListGroup className={`mt-2 question-list ${turnToChooseQuestion === currentUser.uid ? "highlight-div" : ""}`} scrollable={true} >
-                            {questions.map((response, key)=>{
-                                return <ListGroup.Item className="listitem" key={key} action style={{cursor:'pointer'}} onClick={() => handleQuestionChoosed(response.question, key)}>
-                                    {response.description !== "" ? "Topic : "+response.description : ""}
-                                    {response.description !== "" ? <br/> : ""}
-                                    Q{key+1}. : <span style={{textDecoration : questionState[key] ? 'line-through' : 'none'}}><b>{response.question} </b></span> 
-                                </ListGroup.Item>;
-                            })}
-                        </ListGroup>
+                        <div className={turnToChooseQuestion === currentUser.uid ? "highlight-div" : ""}> 
+                            <ListGroup className={`mt-2 question-list `} scrollable={true} >
+                                {questions.map((response, key)=>{
+                                    return <ListGroup.Item className="listitem" key={key} action style={{cursor:'pointer'}} onClick={() => handleQuestionChoosed(response.question, key)}>
+                                        {response.description !== "" ? "Topic : "+response.description : ""}
+                                        {response.description !== "" ? <br/> : ""}
+                                        Q{key+1}. : <span style={{textDecoration : questionState[key] ? 'line-through' : 'none'}}><b>{response.question} </b></span> 
+                                    </ListGroup.Item>;
+                                })}
+                            </ListGroup>
+                        </div>
                     </Col>
                     <Col xs={12} md={6} >
                         <div className="my-2 detail-card rounded bg-light p-2">

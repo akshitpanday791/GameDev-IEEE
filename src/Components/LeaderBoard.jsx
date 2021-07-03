@@ -1,6 +1,6 @@
 import React, { Component } from 'react'; 
 import './LeaderBoard.css'
-import ReactTable from "react-table";
+//import ReactTable from "react-table";
 
 class LeaderBoard extends Component {  
     render() {  
@@ -19,12 +19,12 @@ class LeaderBoard extends Component {
          }]  
       return (  
             <div className="rank">  
-                <ReactTable  
+                {/* <ReactTable  
                     data={data}  
                     columns={columns}  
                     defaultPageSize = {3}  
                     pageSizeOptions = {[2,4, 6]}  
-                />  
+                />   */}
             </div>        
       )  
     }  
