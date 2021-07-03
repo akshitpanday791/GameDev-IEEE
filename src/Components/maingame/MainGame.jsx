@@ -130,6 +130,10 @@ const MainGame = () => {
     }
 
     const GameWonModel = () =>{
+        const sortedScores =  usersList.sort( function ( a, b ) { 
+                return (a.score >= b.score)?-1:1;
+                                } );
+            // console.log(sortedScores)
         return (
             <>
               <Modal show={gameWonVisible} aria-labelledby="contained-modal-title-vcenter" centered>
@@ -137,8 +141,12 @@ const MainGame = () => {
                   <Modal.Title className="result">Game Result </Modal.Title>
                 </Modal.Header>
                 <Modal.Body>
-                    {usersList.map((response, key)=> {
-                        return <div key = {key}><h6>{response.name} -- Score : {response.score}</h6></div>
+                    {sortedScores.map((response, key)=> {
+                        return <div key = {key}><h6>{response.name} -- Score : {response.score}
+                        {key===0 && '🥇'}
+                        {key===1 && '🥈'}
+                        {key===2 && '🥉'}
+                        </h6></div>
                     })}
                 </Modal.Body>
                 <Modal.Footer>
