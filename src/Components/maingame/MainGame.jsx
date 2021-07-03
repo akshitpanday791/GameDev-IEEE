@@ -208,9 +208,10 @@ const MainGame = () => {
             //check bingo
             const bingovalue = noOfBingoForCell(correctAnswerIndex.row, correctAnswerIndex.col);
             if(bingovalue > 0){
-                var newuserlist = usersList;
-                newuserlist[getCurrentUserIndex()].bingo += bingovalue;
-                newuserlist[getCurrentUserIndex()].score +=(2*bingovalue);
+                var newuserlist = [...usersList];
+                var currentUserIndex = getCurrentUserIndex();
+                newuserlist[currentUserIndex].bingo += bingovalue;
+                newuserlist[currentUserIndex].score +=(2*bingovalue);
                 updatescore(roomId, newuserlist, resultPosition, ()=> {
                     //laoding on screen
                 }, response => {
@@ -274,11 +275,12 @@ const MainGame = () => {
                 const bingovalue = noOfBingoForCell(bingo_row, bingo_col);
                 if(bingovalue > 0 || newscore > 0){
                     //create new userlist
-                    var newuserlist = usersList;
-                    if(newscore > 0) newuserlist[getCurrentUserIndex()].score += newscore;
+                    const currentUserIndex = getCurrentUserIndex();
+                    var newuserlist = [...usersList];
+                    if(newscore > 0) newuserlist[currentUserIndex].score += newscore;
                     if(bingovalue > 0){
-                        newuserlist[getCurrentUserIndex()].bingo += bingovalue;
-                        newuserlist[getCurrentUserIndex()].score +=(2*bingovalue);
+                        newuserlist[currentUserIndex].bingo += bingovalue;
+                        newuserlist[currentUserIndex].score += (2*bingovalue);
                     } 
 
                     //check if win
@@ -323,28 +325,28 @@ const MainGame = () => {
     const noOfBingoForCell = (row, col) => {
         const checkRow = (row) =>{
             for(var i = 0; i < 5; i++){
-                console.log("row = "+row+" col = "+i+ "  State : " + board[row].row[i].state);
+                //console.log("row = "+row+" col = "+i+ "  State : " + board[row].row[i].state);
                 if(!board[row].row[i].state) return false; 
             }
             return true;
         }
         const checkColumn = (col) => {
             for(var i = 0; i < 5; i++){
-                console.log("row = "+i+" col = "+col+ "  State : " + board[i].row[col].state );
+                //console.log("row = "+i+" col = "+col+ "  State : " + board[i].row[col].state );
                 if(!board[i].row[col].state) return false; 
             }
             return true;
         }
         const checkRightDigonal = () => {
             for(var i = 0; i < 5; i++){
-                console.log("row = "+i+" col = "+i+ " State : " + board[i].row[i].state);
+                //console.log("row = "+i+" col = "+i+ " State : " + board[i].row[i].state);
                 if(!board[i].row[i].state) return false; 
             }
             return true;
         }
         const checkLeftDiagonal = () => {
             for(var i = 0; i < 5; i++){
-                console.log("row = "+i+" col = "+(4-i)+ "  State : " + board[i].row[4-i].state);
+                //console.log("row = "+i+" col = "+(4-i)+ "  State : " + board[i].row[4-i].state);
                 if(!board[i].row[4-i].state) return false; 
             }
             return true;
