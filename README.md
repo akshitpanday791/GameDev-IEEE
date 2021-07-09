@@ -22,6 +22,36 @@ This is a Quiz Based Bingo Game where the participants have to answer questions 
 
 - It will help students to increase their knowledge and prepare for a competitive exam environment.
 
+## Various activities the player has to perform  :
+ 
+- Login:Players have to log in First with the Name and Some additional information.
+- Playing Room Creation: Player has to create the Room and Play with there friends. (Multiplayers)
+- Playing Theme: Players will randomly given 25 Question from the topics which can be related to Math, General Knowledge, Riddles questions etc.
+- Game Zone: Players will get the 5x5 bingo card having tiles with the answers of 25 Questions written on it. For each player tiles will be in     random order and not visible to each other.
+- Rule Book: There will be a set of questions; players will take chances to select any one question from it.
+After selecting the question, that question will be visible to all the players and then they will solve the question and select the correct answer tile from the bingo card.
+- If selected correctly they will get points for it and that tile will be marked and if not there will be negative marking.
+- To finish the game, the players will have to solve all the questions. No neagtive marking is there.If the player select wrong answer then correct answer will automatically solve but marks will not given to players.
+- Players will get the points on the basis of correct answers.
+- Rewards: At the end the players will be ranked as per their points. Player with the highest points will win.
+
+
+## Reward policy  :  
+
+- Players will get the 1 points for correct answers.
+- There will be no  negative marking for wrong answers.
+- If a player skips the question there will be no negative marking.
+- Bonus points will be given on the basis of Bingo if any particular row,column or diagonal is completed marked, then Bingo complete and player  will receive 2 points.
+- Player will GET REWARDED with bingo bonuses at different stages for being a loyal bingo player.
+
+
+## Please Note:
+
+- This  game is intended for Students.
+- The Game does not offer “Real Money Gambling” or an opportunity to win real money or prizes.
+- The main objective of the Game is to develop the problems solving Skills as well and Improves the Knowledge of the Students.
+- If any Bugs takes place,we are always there to remove the Bug as Improves the Quality of the Game
+
 ## Game Build Under
 
 The game was developed under EG-100 Educational Games Challange which was Organised by IEEE Bombay Section and CDAC Mumbai During 2021
