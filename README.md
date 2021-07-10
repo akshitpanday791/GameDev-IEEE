@@ -124,7 +124,7 @@ After selecting the question, that question will be visible to all the players a
 
 The game was developed under EG-100 Educational Games Challange which was Organised by IEEE Bombay Section and CDAC Mumbai During 2021
 
-## Languages Used  
+## Languages & Technologies Used  
 ![JS](https://img.shields.io/badge/JavaScript-F7DF1E?style=for-the-badge&logo=javascript&logoColor=black)![HTML](https://img.shields.io/badge/HTML5-E34F26?style=for-the-badge&logo=html5&logoColor=white)![CSS](https://img.shields.io/badge/CSS-239120?&style=for-the-badge&logo=css3&logoColor=white)![REACT](https://img.shields.io/badge/React-20232A?style=for-the-badge&logo=react&logoColor=61DAFB)
 ![CF](public/cloud_firestore.png)
 
