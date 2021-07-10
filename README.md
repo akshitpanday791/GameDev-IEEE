@@ -52,16 +52,56 @@ After selecting the question, that question will be visible to all the players a
 - The main objective of the Game is to develop the problems solving Skills as well and Improves the Knowledge of the Students.
 - If any Bugs takes place,we are always there to remove the Bug as Improves the Quality of the Game
 
+## System Requirments
+- Apache Server
+- MySQL
+- PHP 5.3 and above
+- Linux Shared Hosting
+
+## Installation and Configuration
+
+1. Clone the project
+``` 
+git clone https://github.com/unscrewedakshit/GameDev-IEEE.git
+```
+2. Create a project in the firebase account and then add the credential of firebase to the project in /src/firebase.json file.
+ 
+ ```
+var firebaseConfig = {
+  apiKey: "",
+  authDomain: "",
+  projectId: "",
+  storageBucket: "",
+  messagingSenderId: "",
+  appId: ""
+};
+```
+
+3. For testing project on local server
+```
+npm install
+npm start
+```
+- server will start in http://localhost:3000
+
+4. For building the project
+```
+npm install 
+npm build
+```
 ## Game Build Under
 
 The game was developed under EG-100 Educational Games Challange which was Organised by IEEE Bombay Section and CDAC Mumbai During 2021
 
 ## Languages Used  
-![JS](https://img.shields.io/badge/JavaScript-F7DF1E?style=for-the-badge&logo=javascript&logoColor=black)![HTML](https://img.shields.io/badge/HTML5-E34F26?style=for-the-badge&logo=html5&logoColor=white)![CSS](https://img.shields.io/badge/CSS-239120?&style=for-the-badge&logo=css3&logoColor=white)
+![JS](https://img.shields.io/badge/JavaScript-F7DF1E?style=for-the-badge&logo=javascript&logoColor=black)![HTML](https://img.shields.io/badge/HTML5-E34F26?style=for-the-badge&logo=html5&logoColor=white)![CSS](https://img.shields.io/badge/CSS-239120?&style=for-the-badge&logo=css3&logoColor=white)![REACT](https://img.shields.io/badge/React-20232A?style=for-the-badge&logo=react&logoColor=61DAFB)
+
 
 ## Tools Used 
 ![VS Code](https://img.shields.io/badge/Visual_Studio_Code-0078D4?style=for-the-badge&logo=visual%20studio%20code&logoColor=white)
 ![Git](https://img.shields.io/badge/Git-F05032?style=for-the-badge&logo=git&logoColor=white)
+![Github](https://img.shields.io/badge/GitHub-100000?style=for-the-badge&logo=github&logoColor=white)
+![Canva](https://img.shields.io/badge/Canva-%2300C4CC.svg?&style=for-the-badge&logo=Canva&logoColor=white)
 
 ## Created By
 
