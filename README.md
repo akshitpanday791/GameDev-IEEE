@@ -11,7 +11,7 @@ BINGO MINDS is the free online Adventure and Educational Game that Helps to impr
 
 ## About Game :
 
-This is a Quiz Based Bingo Game where the participants have to answer questions based on 8th Class CBSE Syllabus of Mathematics, General Knowledge and Riddles.
+This is a Bingo Based Game where the participants have to answer questions based on 8th Class CBSE Syllabus of Mathematics, General Knowledge and Riddles.
 
 
 ## Learning Objectives of Game :
