@@ -89,12 +89,39 @@ npm start
 npm install 
 npm build
 ```
+
+## User Manual
+
+- Name of Game : Bingo Minds
+- Learning Objective : 
+    -   This game will enhance the mathematical learning capability of players with added fun.
+    -   Quiz Bingo is a fun way to learn & practice.
+    -   It will encourage and engage users by providing winning opportunities through  Mathematical problem solving.
+    -   It will develop user operational speed, strategy building and problem solving skills.
+    -   It will increase the knowledge of students.
+    -   It will help users to prepare for a competitive exam environment.
+
+- Topic & Level :
+    - Currently the test database has questions from
+        -   Class 8 CBSE Mathematics
+        -   Riddles
+        -   General Knowledge
+        -   Aptitude
+    - Levels of question
+        - Level Varies with Easy,Medium and Hard Questions
+- Target Users
+    - School Students of 8th Grade Onwards
+- Prerequisites
+    - Only Subject Knowledge Required, Playing and Getting Famailier with Game Interface is Easy.
+- Steps to Use Game
+
 ## Game Build Under
 
 The game was developed under EG-100 Educational Games Challange which was Organised by IEEE Bombay Section and CDAC Mumbai During 2021
 
 ## Languages Used  
 ![JS](https://img.shields.io/badge/JavaScript-F7DF1E?style=for-the-badge&logo=javascript&logoColor=black)![HTML](https://img.shields.io/badge/HTML5-E34F26?style=for-the-badge&logo=html5&logoColor=white)![CSS](https://img.shields.io/badge/CSS-239120?&style=for-the-badge&logo=css3&logoColor=white)![REACT](https://img.shields.io/badge/React-20232A?style=for-the-badge&logo=react&logoColor=61DAFB)
+![CF](public/cloud_firestore.png)
 
 
 ## Tools Used 
