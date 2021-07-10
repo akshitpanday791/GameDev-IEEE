@@ -22,20 +22,6 @@ This is a Bingo Based Game where the participants have to answer questions based
 
 - It will help students to increase their knowledge and prepare for a competitive exam environment.
 
-## Various activities the player has to perform  :
- 
-- Login:Players have to log in First with the Name and Some additional information.
-- Playing Room Creation: Player has to create the Room and Play with there friends. (Multiplayers)
-- Playing Theme: Players will randomly given 25 Question from the topics which can be related to Math, General Knowledge, Riddles questions etc.
-- Game Zone: Players will get the 5x5 bingo card having tiles with the answers of 25 Questions written on it. For each player tiles will be in     random order and not visible to each other.
-- Rule Book: There will be a set of questions; players will take chances to select any one question from it.
-After selecting the question, that question will be visible to all the players and then they will solve the question and select the correct answer tile from the bingo card.
-- If selected correctly they will get points for it and that tile will be marked and if not there will be negative marking.
-- To finish the game, the players will have to solve all the questions. No neagtive marking is there.If the player select wrong answer then correct answer will automatically solve but marks will not given to players.
-- Players will get the points on the basis of correct answers.
-- Rewards: At the end the players will be ranked as per their points. Player with the highest points will win.
-
-
 ## Reward policy  :  
 
 - Players will get the 1 points for correct answers.
@@ -114,6 +100,25 @@ npm build
 - Prerequisites
     - Only Subject Knowledge Required, Playing and Getting Famailier with Game Interface is Easy.
 - Steps to Use Game
+    - Login:Players have to log in First with the Name and Some additional information.
+    - Playing Room Creation: Player has to create the Room and Play with there friends. (Multiplayers)
+    - Playing Theme: Players will randomly given 25 Question from the topics which can be related to Math, General Knowledge, Riddles questions etc.
+    - Game Zone: Players will get the 5x5 bingo card having tiles with the answers of 25 Questions written on it. For each player tiles will be in     random order and not visible to each other.
+    - Rule Book: There will be a set of questions; players will take chances to select any one question from it.
+After selecting the question, that question will be visible to all the players and then they will solve the question and select the correct answer tile from the bingo card.
+    - If selected correctly they will get points for it and that tile will be marked and if not there will be negative marking.
+    - To finish the game, the players will have to solve all the questions. No neagtive marking is there.If the player select wrong answer then correct answer will automatically solve but marks will not given to players.
+    - Players will get the points on the basis of correct answers.
+    - Rewards: At the end the players will be ranked as per their points. Player with the highest points will win.
+
+
+## Glimpses of Game
+
+![Home Page](public/img_1.jpeg)
+![Welcome Page](public/img_2.jpeg)
+![Game Play 1](public/img_3.jpeg)
+![Game Play 2](public/img_4.jpeg)
+![Leader Board](public/img_5.jpeg)
 
 ## Game Build Under
 
