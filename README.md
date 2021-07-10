@@ -118,7 +118,7 @@ After selecting the question, that question will be visible to all the players a
 ![Welcome Page](public/img_2.jpeg)
 ![Game Play 1](public/img_3.jpeg)
 ![Game Play 2](public/img_4.jpeg)
-![Leader Board](public/img_5.jpeg)
+![Leader Board](public/img_5.png)
 
 ## Game Build Under
 
